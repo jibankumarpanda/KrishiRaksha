@@ -1,7 +1,16 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+import { Doughnut } from 'react-chartjs-2';
 import Icon from '@/components/ui/AppIcon';
+
+// Register ChartJS components
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 interface FraudData {
   category: string;
@@ -14,80 +23,100 @@ interface FraudDistributionChartProps {
 }
 
 const FraudDistributionChart = ({ data }: FraudDistributionChartProps) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const chartData = {
+    labels: data.map((item) => item.category),
+    datasets: [
+      {
+        data: data.map((item) => item.value),
+        backgroundColor: data.map((item) => item.color),
+        borderColor: '#ffffff',
+        borderWidth: 3,
+        hoverOffset: 15,
+        hoverBorderWidth: 4,
+      },
+    ],
+  };
 
-  useEffect(() => {
-    if (!canvasRef.current) return;
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    animation: {
+      animateRotate: true,
+      animateScale: true,
+      duration: 1000,
+      easing: 'easeInOutQuart' as const,
+    },
+    plugins: {
+      legend: {
+        display: false,
+      },
+      tooltip: {
+        backgroundColor: 'rgba(31, 41, 55, 0.95)',
+        titleFont: {
+          family: 'Inter',
+          size: 14,
+          weight: 600,
+        },
+        bodyFont: {
+          family: 'Poppins',
+          size: 13,
+        },
+        padding: 12,
+        cornerRadius: 8,
+        displayColors: true,
+        callbacks: {
+          label: function (context: any) {
+            return `${context.label}: ${context.parsed}%`;
+          },
+        },
+      },
+    },
+    cutout: '65%',
+  };
 
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    // Set canvas size
-    const dpr = window.devicePixelRatio || 1;
-    const rect = canvas.getBoundingClientRect();
-    canvas.width = rect.width * dpr;
-    canvas.height = rect.height * dpr;
-    ctx.scale(dpr, dpr);
-
-    // Clear canvas
-    ctx.clearRect(0, 0, rect.width, rect.height);
-
-    // Chart dimensions
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    const radius = Math.min(centerX, centerY) - 60;
-
-    // Calculate total
-    const total = data.reduce((sum, item) => sum + item.value, 0);
-
-    // Draw doughnut
-    let currentAngle = -Math.PI / 2;
-    data.forEach((item) => {
-      const sliceAngle = (item.value / total) * 2 * Math.PI;
-
-      ctx.beginPath();
-      ctx.arc(centerX, centerY, radius, currentAngle, currentAngle + sliceAngle);
-      ctx.arc(centerX, centerY, radius * 0.6, currentAngle + sliceAngle, currentAngle, true);
-      ctx.closePath();
-      ctx.fillStyle = item.color;
-      ctx.fill();
-
-      currentAngle += sliceAngle;
-    });
-
-    // Draw center text
-    ctx.fillStyle = '#1F2937';
-    ctx.font = 'bold 24px Inter';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('100%', centerX, centerY - 10);
-    ctx.font = '14px Inter';
-    ctx.fillStyle = '#6B7280';
-    ctx.fillText('Total Claims', centerX, centerY + 15);
-  }, [data]);
+  const total = data.reduce((sum, item) => sum + item.value, 0);
 
   return (
-    <div className="bg-card border border-border rounded-lg p-6 shadow-card">
+    <div className="bg-card border border-border rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
       <div className="flex items-center space-x-2 mb-4">
-        <Icon name="ShieldCheckIcon" size={24} className="text-success" />
+        <div className="bg-emerald-700/10 p-2 rounded-lg">
+          <Icon name="ShieldCheckIcon" size={24} className="text-emerald-700" />
+        </div>
         <h2 className="text-xl font-heading font-bold text-foreground">Fraud Detection</h2>
       </div>
       <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
-        <div className="w-full lg:w-1/2 h-64">
-          <canvas ref={canvasRef} className="w-full h-full" />
+        <div className="w-full lg:w-1/2 h-64 relative">
+          <Doughnut options={options} data={chartData} />
+          <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+            <span className="text-3xl font-heading font-bold text-foreground">{total}%</span>
+            <span className="text-sm text-text-secondary font-body">Total Claims</span>
+          </div>
         </div>
         <div className="w-full lg:w-1/2 space-y-3">
           {data.map((item, index) => (
-            <div key={index} className="flex items-center justify-between">
+            <div
+              key={index}
+              className="flex items-center justify-between p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors duration-200"
+            >
               <div className="flex items-center space-x-3">
                 <div
-                  className="w-4 h-4 rounded-full"
+                  className="w-4 h-4 rounded-full shadow-sm"
                   style={{ backgroundColor: item.color }}
                 />
-                <span className="text-sm font-body text-foreground">{item.category}</span>
+                <span className="text-sm font-body text-foreground font-medium">{item.category}</span>
               </div>
-              <span className="text-sm font-body font-bold text-foreground">{item.value}%</span>
+              <div className="flex items-center space-x-2">
+                <span className="text-lg font-heading font-bold text-foreground">{item.value}%</span>
+                <div className="w-16 h-2 bg-muted rounded-full overflow-hidden">
+                  <div
+                    className="h-full rounded-full transition-all duration-500"
+                    style={{
+                      backgroundColor: item.color,
+                      width: `${item.value}%`
+                    }}
+                  />
+                </div>
+              </div>
             </div>
           ))}
         </div>

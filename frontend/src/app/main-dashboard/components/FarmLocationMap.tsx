@@ -95,16 +95,15 @@ const FarmLocationMap = ({ locations }: FarmLocationMapProps) => {
         <button
           onClick={getCurrentLocation}
           disabled={isLoadingLocation}
-          className={`flex items-center space-x-2 px-4 py-2 rounded-md text-sm font-body transition-colors ${
-            isLoadingLocation
+          className={`flex items-center space-x-2 px-4 py-2 rounded-md text-sm font-body transition-colors ${isLoadingLocation
               ? 'bg-muted text-muted-foreground cursor-not-allowed'
-              : 'bg-primary text-primary-foreground hover:bg-primary/90'
-          }`}
+              : 'bg-emerald-700 text-white hover:bg-emerald-800'
+            }`}
         >
-          <Icon 
-            name={isLoadingLocation ? 'ArrowPathIcon' : 'LocationMarkerIcon'} 
-            size={16} 
-            className={isLoadingLocation ? 'animate-spin' : ''} 
+          <Icon
+            name={isLoadingLocation ? 'ArrowPathIcon' : 'LocationMarkerIcon'}
+            size={16}
+            className={isLoadingLocation ? 'animate-spin' : ''}
           />
           <span>{isLoadingLocation ? 'Getting Location...' : 'Get My Location'}</span>
         </button>
@@ -134,16 +133,15 @@ const FarmLocationMap = ({ locations }: FarmLocationMapProps) => {
           <button
             key={location.id}
             onClick={() => setSelectedLocation(location)}
-            className={`w-full flex items-center justify-between p-3 rounded-md border transition-all duration-200 ${
-              selectedLocation?.id === location.id
-                ? 'border-primary bg-primary/5' :'border-border hover:border-primary/50'
-            }`}
+            className={`w-full flex items-center justify-between p-3 rounded-md border transition-all duration-200 ${selectedLocation?.id === location.id
+                ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50'
+              }`}
           >
             <div className="flex items-center space-x-3">
-              <Icon 
-                name={location.id === 'current-location' ? 'LocationMarkerIcon' : 'MapPinIcon'} 
-                size={20} 
-                className={location.id === 'current-location' ? 'text-success' : 'text-primary'} 
+              <Icon
+                name={location.id === 'current-location' ? 'LocationMarkerIcon' : 'MapPinIcon'}
+                size={20}
+                className={location.id === 'current-location' ? 'text-success' : 'text-primary'}
               />
               <div className="text-left">
                 <p className="text-sm font-body font-medium text-foreground">{location.name}</p>

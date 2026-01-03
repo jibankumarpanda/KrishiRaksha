@@ -3,6 +3,52 @@
 import { useState } from 'react';
 import Icon from '@/components/ui/AppIcon';
 
+// CSS for green slider styling
+const sliderStyles = `
+  .green-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+  }
+
+  .green-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #10b981;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+
+  .green-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #10b981;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+
+  /* Green fill for the selected portion */
+  .green-slider::-webkit-slider-track {
+    background: linear-gradient(to right, #10b981 0%, #10b981 var(--value), #e5e7eb var(--value), #e5e7eb 100%);
+    border-radius: 5px;
+  }
+
+  .green-slider::-moz-range-track {
+    background: linear-gradient(to right, #10b981 0%, #10b981 var(--value), #e5e7eb var(--value), #e5e7eb 100%);
+    border-radius: 5px;
+  }
+`;
+
 interface FormData {
   cropType: string;
   landAreaValue: number;
@@ -66,9 +112,11 @@ const YieldPredictionForm = ({ onSubmit, isLoading }: YieldPredictionFormProps) 
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-card border border-border rounded-lg p-6 shadow-card">
+    <>
+  <style jsx>{sliderStyles}</style>
+  <form onSubmit={handleSubmit} className="bg-card border border-border rounded-lg p-6 shadow-card">
       <div className="flex items-center space-x-2 mb-6">
-        <Icon name="ChartBarIcon" size={24} className="text-primary" />
+        <Icon name="ChartBarIcon" size={24} className="text-emerald-700" />
         <h2 className="text-xl font-heading font-bold text-foreground">Yield Prediction</h2>
       </div>
 
@@ -179,10 +227,9 @@ const YieldPredictionForm = ({ onSubmit, isLoading }: YieldPredictionFormProps) 
             {irrigationTypes.map((type) => (
               <label
                 key={type.value}
-                className={`flex items-center space-x-3 p-3 border rounded-md cursor-pointer transition-all duration-200 ${
-                  formData.irrigationType === type.value
-                    ? 'border-primary bg-primary/10' :'border-input hover:border-primary/50'
-                }`}
+                className={`flex items-center space-x-3 p-3 border rounded-md cursor-pointer transition-all duration-200 ${formData.irrigationType === type.value
+                    ? 'border-emerald-700 bg-emerald-700/10' : 'border-input hover:border-emerald-700/50'
+                  }`}
               >
                 <input
                   type="radio"
@@ -190,10 +237,10 @@ const YieldPredictionForm = ({ onSubmit, isLoading }: YieldPredictionFormProps) 
                   value={type.value}
                   checked={formData.irrigationType === type.value}
                   onChange={(e) => handleInputChange('irrigationType', e.target.value)}
-                  className="w-4 h-4 text-primary focus:ring-primary"
+                  className="w-4 h-4 text-emerald-700 focus:ring-emerald-700"
                   required
                 />
-                <Icon name={type.icon as any} size={20} className="text-primary" />
+                <Icon name={type.icon as any} size={20} className="text-emerald-700" />
                 <span className="text-sm font-body text-foreground">{type.label}</span>
               </label>
             ))}
@@ -213,7 +260,8 @@ const YieldPredictionForm = ({ onSubmit, isLoading }: YieldPredictionFormProps) 
             step="5"
             value={formData.fertilizerUsage}
             onChange={(e) => handleInputChange('fertilizerUsage', parseInt(e.target.value))}
-            className="w-full h-2 bg-muted rounded-lg appearance-none cursor-pointer accent-primary"
+            className="w-full h-2 bg-muted rounded-lg appearance-none cursor-pointer accent-emerald-700"
+            style={{ '--value': `${(formData.fertilizerUsage / 200) * 100}%` } as React.CSSProperties}
           />
           <div className="flex justify-between text-xs text-text-secondary mt-1">
             <span>0 kg</span>
@@ -226,11 +274,11 @@ const YieldPredictionForm = ({ onSubmit, isLoading }: YieldPredictionFormProps) 
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full bg-primary text-primary-foreground py-3 rounded-md font-body font-medium hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+          className="w-full bg-emerald-700 text-white py-3 rounded-md font-body font-medium hover:bg-emerald-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
         >
           {isLoading ? (
             <>
-              <div className="w-5 h-5 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
+              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
               <span>Predicting...</span>
             </>
           ) : (
@@ -242,6 +290,7 @@ const YieldPredictionForm = ({ onSubmit, isLoading }: YieldPredictionFormProps) 
         </button>
       </div>
     </form>
+    </>
   );
 };
 
