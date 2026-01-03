@@ -1,0 +1,48 @@
+# Handle line endings automatically for all files
+* text=auto
+
+# Ensure Windows scripts have CRLF line endings
+*.cmd text eol=crlf
+*.bat text eol=crlf
+*.ps1 text eol=crlf
+
+# Ensure shell scripts have LF line endings
+*.sh text eol=lf
+
+# Binary files should not be modified
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.pdf binary
+*.zip binary
+*.gz binary
+*.tar binary
+*.pyc binary
+*.pkl binary
+*.h5 binary
+*.pth binary
+*.pt binary
+*.bin binary
+*.so binary
+*.dll binary
+*.exe binary
+
+# Source code files
+*.py text diff=python
+*.js text diff=javascript
+*.ts text diff=typescript
+*.css text
+*.html text
+*.json text
+*.md text
+*.txt text
+*.yml text
+yarn.lock -text
+package-lock.json -text
+
+# Keep existing line endings for these files
+*.sln text eol=crlf
+*.vcxproj text eol=crlf
+*.vcxproj.filters text eol=crlf
+*.vcxproj.user text eol=crlf

@@ -1,0 +1,18 @@
+export type IconName = 
+  | 'ArrowRightOnRectangleIcon'
+  | 'ArrowLeftIcon'
+  | 'Bars3Icon'
+  | 'ChartBarIcon'
+  | 'ChevronDownIcon'
+  | 'DocumentTextIcon'
+  | 'InformationCircleIcon'
+  | 'UserIcon'
+  | 'WalletIcon'
+  | 'XMarkIcon'
+  | 'SparklesIcon'
+  | 'UserPlusIcon'
+  | 'ArrowRightIcon'
+  | 'PhoneIcon'
+  | 'EnvelopeIcon'
+  | 'MapPinIcon'
+  | 'HomeIcon';

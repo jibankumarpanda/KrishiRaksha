@@ -1,0 +1,22 @@
+# ---------- Core ML ----------
+numpy==1.24.3
+pandas==2.0.3
+scikit-learn==1.3.2
+xgboost==2.0.0
+joblib==1.3.2
+
+# ---------- Image Processing ---------
+opencv-python-headless==4.8.1.78
+Pillow==10.0.1
+
+# ---------- Deep Learning (CPU Safe) ----------
+tensorflow-cpu==2.13.0
+
+# ---------- API & Backend ----------
+fastapi==0.95.2
+uvicorn==0.22.0
+pydantic==1.10.13
+python-multipart==0.0.6
+
+# ---------- Utils ----------
+typing-extensions==4.5.0

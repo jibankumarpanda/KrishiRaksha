@@ -1,0 +1,2 @@
+# Model files will be saved here after training
+# Files: damage_classifier.h5, duplicate_detector.pkl
