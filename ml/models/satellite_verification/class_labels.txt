@@ -1,0 +1,4 @@
+healthy
+damaged
+cloud_cover
+no_crop
