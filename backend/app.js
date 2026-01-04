@@ -10,38 +10,46 @@ const app = express();
 
 // Middleware
 // CORS configuration
-app.use(cors({
+const FRONTEND_URL = process.env.FRONTEND_URL || 'https://krishi-raksha-8fjb.vercel.app';
+
+const corsOptions = {
   origin: function (origin, callback) {
     // Allow requests with no origin (like mobile apps, curl, Postman)
     if (!origin) return callback(null, true);
-    
+
     // Allow localhost on any port for development
     if (origin.startsWith('http://localhost:') || origin.startsWith('https://localhost:')) {
       return callback(null, true);
     }
-    
+
     // Allow specific production domains
     const allowedOrigins = [
+      FRONTEND_URL,
       'https://your-frontend-domain.com',  // Your production frontend URL
       // Add more production URLs here
     ];
-    
+
     if (allowedOrigins.includes(origin)) {
       return callback(null, true);
     }
-    
-    // For Render deployment, allow the frontend domain
+
+    // Allow known hosting providers with dynamic domains
     if (origin.includes('onrender.com') || origin.includes('vercel.app') || origin.includes('netlify.app')) {
       return callback(null, true);
     }
-    
+
+    console.warn('Blocked CORS origin:', origin);
     callback(new Error('Not allowed by CORS'));
   },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
   optionsSuccessStatus: 200 // Some legacy browsers (IE11) choke on 204
-}));
+};
+
+app.use(cors(corsOptions));
+// Handle preflight OPTIONS requests for all routes
+app.options('*', cors(corsOptions));
 
 // Body parsing middleware
 app.use(express.json());
