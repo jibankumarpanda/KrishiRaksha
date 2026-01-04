@@ -26,10 +26,10 @@ const AppIcon = React.forwardRef<SVGSVGElement, AppIconProps>(({
     ...props
 }, ref) => {
     const iconSet = variant === 'solid' ? HeroIconsSolid : HeroIcons;
-    const IconComponent = iconSet[name as keyof typeof iconSet] as React.ComponentType<any>;
+    const IconComponent = iconSet[name as keyof typeof iconSet] as React.ComponentType<React.SVGProps<SVGSVGElement>>;
 
     if (!IconComponent) {
-        const { ref: _, ...restProps } = props;
+        const restProps = props as React.SVGProps<SVGSVGElement>;
         return (
             <QuestionMarkCircleIcon
                 ref={ref}
@@ -42,7 +42,7 @@ const AppIcon = React.forwardRef<SVGSVGElement, AppIconProps>(({
         );
     }
 
-    const { ref: _, ...restProps } = props;
+    const restProps = props as React.SVGProps<SVGSVGElement>;
     return (
         <IconComponent
             ref={ref}

@@ -11,9 +11,6 @@ import { RainbowKitProvider, lightTheme } from '@rainbow-me/rainbowkit';
 import { config } from '@/config/rainbowkit';
 import { ReactNode, useEffect, useState } from 'react';
 
-// Import RainbowKit styles
-import '@rainbow-me/rainbowkit/styles.css';
-
 // Theme that matches app branding
 const rkTheme = lightTheme({
   accentColor: '#10B981',

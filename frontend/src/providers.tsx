@@ -6,7 +6,6 @@ import { WagmiProvider, createConfig, http } from 'wagmi';
 import { mainnet } from 'viem/chains';
 import { connectorsForWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { walletConnectWallet } from '@rainbow-me/rainbowkit/wallets';
-import '@rainbow-me/rainbowkit/styles.css';
 
 // Create a client
 const queryClient = new QueryClient();

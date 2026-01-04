@@ -9,7 +9,7 @@ interface Claim {
   submissionDate: string;
   cropType: string;
   claimedAmount: number;
-  status: 'pending' | 'under_review' | 'approved' | 'rejected' | 'paid';
+  status: 'pending' | 'under_review' | 'approved' | 'rejected' | 'paid' | 'ml_verification';
   affectedArea: number;
   incidentDate: string;
   incidentDescription: string;

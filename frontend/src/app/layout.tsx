@@ -6,6 +6,7 @@
 import React from 'react';
 import type { Metadata } from 'next';
 import '@/styles/tailwind.css';
+import '@rainbow-me/rainbowkit/styles.css';
 import { Providers } from '@/providers';
 
 export const viewport = {

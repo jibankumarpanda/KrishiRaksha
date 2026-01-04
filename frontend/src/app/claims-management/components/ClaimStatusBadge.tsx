@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface ClaimStatusBadgeProps {
-  status: 'pending' | 'under_review' | 'approved' | 'rejected' | 'paid';
+  status: 'pending' | 'under_review' | 'approved' | 'rejected' | 'paid' | 'ml_verification';
 }
 
 const ClaimStatusBadge = ({ status }: ClaimStatusBadgeProps) => {
@@ -17,6 +17,12 @@ const ClaimStatusBadge = ({ status }: ClaimStatusBadgeProps) => {
       bgColor: 'bg-secondary/10',
       textColor: 'text-secondary',
       borderColor: 'border-secondary/20',
+    },
+    ml_verification: {
+      label: 'ML Verification',
+      bgColor: 'bg-indigo-100',
+      textColor: 'text-indigo-600',
+      borderColor: 'border-indigo-200',
     },
     approved: {
       label: 'Approved',

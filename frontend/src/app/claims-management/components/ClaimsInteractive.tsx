@@ -275,13 +275,21 @@ const ClaimsInteractive = () => {
     setDateRange({ start: '', end: '' });
   };
 
+  const normalizeStatus = (s: any): Claim['status'] => {
+    const validStatuses = ['pending', 'under_review', 'approved', 'rejected', 'paid', 'ml_verification'] as const;
+    return validStatuses.includes(s) ? (s as Claim['status']) : 'under_review';
+  };
+
   const handleViewDetails = async (claim: Claim) => {
     // Fetch full claim details from backend
     const fullClaim = await fetchClaimDetails(claim.id);
     if (fullClaim) {
+      // Ensure the backend status (string) is normalized to the Claim union type
+      const status = normalizeStatus(fullClaim.status ?? claim.status);
       setSelectedClaim({
         ...claim,
         ...fullClaim,
+        status,
         photos: fullClaim.photos || [],
         documents: fullClaim.documents || [],
         assessorNotes: fullClaim.assessorNotes,
